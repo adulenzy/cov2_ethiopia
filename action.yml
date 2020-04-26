@@ -1,0 +1,13 @@
+name: 'cov2_eth-via--telegram'
+description: 'Get covid-19 status for Ethiopia'
+author: 'Ado Woldu with thanks to Felipe Augusto de Almeida'
+inputs:
+  country:
+    description: 'the specific country you want to know'
+    default: 'Ethiopia'
+  date:
+    description: 'the date of update'
+    default: '00-00-0000'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

@@ -1,0 +1,37 @@
+name: A workflow for covid-19
+on: 
+  push:
+    branches:   
+      - master
+  schedule:
+    - cron:  '0 8 * * *'
+
+jobs:
+  build:
+    name: Get covid info
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: |
+        npm install
+        npm run all
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ./
+      with: 
+        country: 'Brazil'
+      id: data
+    - name: send default telegram message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: | 
+          Overall statistics
+          Country ${{ steps.data.outputs.country }} 
+          Date ${{ steps.data.outputs.date }} 
+          Confirmed ${{ steps.data.outputs.confirmed }} 
+          Deaths ${{ steps.data.outputs.deaths }} 
+          Recovered ${{ steps.data.outputs.recovered }}
